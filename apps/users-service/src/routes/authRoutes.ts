@@ -1,7 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const { query } = require('../database/connection');
-
 const router = express.Router();
 
 // POST /api/auth/signup
@@ -59,6 +58,7 @@ router.post('/signup', async (req: any, res: any) => {
 });
 
 // POST /api/auth/login
+
 router.post('/login', async (req: any, res: any) => {
   try {
     const { email, password } = req.body;
@@ -92,7 +92,7 @@ router.post('/login', async (req: any, res: any) => {
     }
 
     // Return user info (without password hash)
-    const { password_hash, ...userWithoutPassword } = user;
+    const { password_hash: _passwordHash, ...userWithoutPassword } = user;
 
     res.status(200).json({
       message: 'Login successful',
