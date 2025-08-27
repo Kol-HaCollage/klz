@@ -1,0 +1,47 @@
+{
+  "name": "klz-chart",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/klz-chart",
+  "targets": {
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "helm lint .",
+        "cwd": "apps/klz-chart"
+      }
+    },
+    "template": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "helm template klz . --debug",
+        "cwd": "apps/klz-chart"
+      }
+    },
+    "package": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "helm package . --destination ../../dist/charts",
+        "cwd": "apps/klz-chart"
+      },
+      "outputs": ["{workspaceRoot}/dist/charts"]
+    },
+    "install": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "helm upgrade --install klz . --create-namespace --namespace klz-dev",
+        "cwd": "apps/klz-chart"
+      },
+      "dependsOn": ["^build"]
+    },
+    "uninstall": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "helm uninstall klz --namespace klz-dev",
+        "cwd": "apps/klz-chart"
+      }
+    }
+  },
+  "tags": ["type:deployment", "scope:klz"],
+  "implicitDependencies": ["@klz/KLZ"]
+}

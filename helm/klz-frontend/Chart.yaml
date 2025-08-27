@@ -1,0 +1,16 @@
+apiVersion: v2
+name: klz
+description: A Helm chart for KLZ React application
+version: 0.1.0
+appVersion: '1.0.0'
+type: application
+
+keywords:
+  - klz
+  - react
+  - vite
+  - frontend
+
+maintainers:
+  - name: KLZ Team
+    email: team@klz.com
