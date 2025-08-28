@@ -1,10 +1,12 @@
+import { Request, Response } from 'express';
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const { query } = require('../database/connection');
+
 const router = express.Router();
 
 // POST /api/auth/signup
-router.post('/signup', async (req: any, res: any) => {
+router.post('/signup', async (req: Request, res: Response) => {
   try {
     const { email, password, firstName, lastName } = req.body;
 
@@ -43,11 +45,16 @@ router.post('/signup', async (req: any, res: any) => {
       message: 'User created successfully',
       user: result.rows[0],
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Signup error:', error);
 
     // Handle duplicate email
-    if (error.code === '23505' && error.constraint === 'users_email_key') {
+    if (
+      error &&
+      typeof error === 'object' &&
+      'code' in error &&
+      error.code === '23505'
+    ) {
       return res
         .status(409)
         .json({ error: 'User with this email already exists' });
@@ -58,8 +65,7 @@ router.post('/signup', async (req: any, res: any) => {
 });
 
 // POST /api/auth/login
-
-router.post('/login', async (req: any, res: any) => {
+router.post('/login', async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
@@ -77,12 +83,6 @@ router.post('/login', async (req: any, res: any) => {
     }
 
     const user = result.rows[0];
-    console.log(
-      'Found user:',
-      user.email,
-      'hash length:',
-      user.password_hash?.length
-    );
 
     // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password_hash);
@@ -92,13 +92,14 @@ router.post('/login', async (req: any, res: any) => {
     }
 
     // Return user info (without password hash)
-    const { password_hash: _passwordHash, ...userWithoutPassword } = user;
+    const { password_hash, ...userWithoutPassword } = user;
 
     res.status(200).json({
       message: 'Login successful',
       user: userWithoutPassword,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    console.error('Login error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
