@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NX_CLOUD_ACCESS_TOKEN: ''
+      NX_CLOUD_DISTRIBUTED_EXECUTION: 'false'
+      NX_DAEMON: 'false'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,6 +49,6 @@ jobs:
       - run: npx nx run @klz/users-service:test
       - run: npx nx run @klz/users-service:build
       - run: npx nx run @klz/users-service:typecheck
-      # Nx Cloud recommends fixes for failures to help you get CI green faster. Learn more: https://nx.dev/ci/features/self-healing-ci
-      - run: npx nx fix-ci
+        # Nx Cloud recommends fixes for failures to help you get CI green faster. Learn more: https://nx.dev/ci/features/self-healing-ci
+        # - run: npx nx fix-ci
         if: always()
