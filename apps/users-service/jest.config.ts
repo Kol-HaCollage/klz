@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   displayName: '@klz/users-service',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',

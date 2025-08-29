@@ -53,6 +53,7 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
+        "jestConfig": "apps/users-service/jest.config.ts",
         "passWithNoTests": true
       }
     }
