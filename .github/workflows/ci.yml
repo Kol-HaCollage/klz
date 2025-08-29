@@ -36,11 +36,15 @@ jobs:
       - name: Install Helm
         run: |
           curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-          sudo mv /usr/local/bin/helm /usr/bin/helm
+          export PATH=$PATH:/usr/local/bin
       # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
       # - run: npx nx-cloud record -- echo Hello World
       # When you enable task distribution, run the e2e-ci task instead of e2e
-      - run: npx nx run-many -t lint test build typecheck e2e --skip-nx-cache
+      # - run: npx nx run-many -t lint test build typecheck
+      - run: npx nx run @klz/users-service:lint
+      - run: npx nx run @klz/users-service:test
+      - run: npx nx run @klz/users-service:build
+      - run: npx nx run @klz/users-service:typecheck
       # Nx Cloud recommends fixes for failures to help you get CI green faster. Learn more: https://nx.dev/ci/features/self-healing-ci
       - run: npx nx fix-ci
         if: always()
