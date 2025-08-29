@@ -41,7 +41,7 @@ router.post('/signup', async (req: Request, res: Response) => {
 
     const result = await query(sql, [email, passwordHash, firstName, lastName]);
 
-    res.status(201).json({
+    return res.status(201).json({
       message: 'User created successfully',
       user: result.rows[0],
     });
@@ -60,7 +60,7 @@ router.post('/signup', async (req: Request, res: Response) => {
         .json({ error: 'User with this email already exists' });
     }
 
-    res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 
@@ -94,13 +94,13 @@ router.post('/login', async (req: Request, res: Response) => {
     // Return user info (without password hash)
     const { password_hash, ...userWithoutPassword } = user;
 
-    res.status(200).json({
+    return res.status(200).json({
       message: 'Login successful',
       user: userWithoutPassword,
     });
   } catch (error: unknown) {
     console.error('Login error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 
