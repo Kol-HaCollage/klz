@@ -5,8 +5,8 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import * as path from 'path';
-import * as dotenv from 'dotenv';
+import path from 'path';
+import dotenv from 'dotenv';
 
 // Load environment variables
 dotenv.config();

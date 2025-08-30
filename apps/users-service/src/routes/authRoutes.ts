@@ -3,21 +3,25 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const { query } = require('../database/connection');
 
+const SALT_ROUNDS = 12;
+const DUPLICATE_KEY_ERROR_CODE = '23505';
 const router = express.Router();
 
-// POST /api/auth/signup
 router.post('/signup', async (req: Request, res: Response) => {
   try {
     const { email, password, firstName, lastName } = req.body;
+    const trimmedEmail = email?.trim();
+    const trimmedFirstName = firstName?.trim();
+    const trimmedLastName = lastName?.trim();
 
     // Basic validation
-    if (!email || !password) {
+    if (!trimmedEmail || !password) {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
     // Simple email format check
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(trimmedEmail)) {
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
@@ -29,9 +33,7 @@ router.post('/signup', async (req: Request, res: Response) => {
     }
 
     // Hash password
-    const saltRounds = 12;
-    const passwordHash = await bcrypt.hash(password, saltRounds);
-
+    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
     // Save to database
     const sql = `
       INSERT INTO users (email, password_hash, first_name, last_name)
@@ -39,7 +41,12 @@ router.post('/signup', async (req: Request, res: Response) => {
       RETURNING id, email, first_name, last_name, is_verified, created_at
     `;
 
-    const result = await query(sql, [email, passwordHash, firstName, lastName]);
+    const result = await query(sql, [
+      trimmedEmail,
+      passwordHash,
+      trimmedEmail,
+      trimmedLastName,
+    ]);
 
     return res.status(201).json({
       message: 'User created successfully',
@@ -68,15 +75,16 @@ router.post('/signup', async (req: Request, res: Response) => {
 router.post('/login', async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+    const trimmedEmail = email?.trim();
 
     // Basic validation
-    if (!email || !password) {
+    if (!trimmedEmail || !password) {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
     // Find user by email
     const sql = 'SELECT * FROM users WHERE email = $1';
-    const result = await query(sql, [email]);
+    const result = await query(sql, [trimmedEmail]);
 
     if (result.rows.length === 0) {
       return res.status(401).json({ error: 'Invalid email or password' });
