@@ -44,7 +44,7 @@ router.post('/signup', async (req: Request, res: Response) => {
     const result = await query(sql, [
       trimmedEmail,
       passwordHash,
-      trimmedEmail,
+      trimmedFirstName,
       trimmedLastName,
     ]);
 
@@ -56,11 +56,12 @@ router.post('/signup', async (req: Request, res: Response) => {
     console.error('Signup error:', error);
 
     // Handle duplicate email
+    // Handle duplicate email
     if (
       error &&
       typeof error === 'object' &&
       'code' in error &&
-      error.code === '23505'
+      error.code === DUPLICATE_KEY_ERROR_CODE
     ) {
       return res
         .status(409)
