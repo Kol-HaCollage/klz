@@ -1,0 +1,61 @@
+{
+  "name": "@klz/users-service",
+  "sourceRoot": "apps/users-service/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "apps/users-service/dist",
+        "main": "apps/users-service/src/main.ts",
+        "tsConfig": "apps/users-service/tsconfig.app.json",
+        "assets": ["apps/users-service/src/assets"],
+        "generatePackageJson": true,
+        "webpackConfig": "apps/users-service/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        },
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "sourceMap": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "@klz/users-service:build",
+        "args": ["apps/users-service/dist/main.js"]
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "@klz/users-service:build:development"
+        },
+        "production": {
+          "buildTarget": "@klz/users-service:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/users-service/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
