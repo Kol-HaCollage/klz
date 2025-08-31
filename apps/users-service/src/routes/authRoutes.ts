@@ -56,16 +56,18 @@ router.post('/signup', async (req: Request, res: Response) => {
     console.error('Signup error:', error);
 
     // Handle duplicate email
-    // Handle duplicate email
     if (
       error &&
       typeof error === 'object' &&
       'code' in error &&
       error.code === DUPLICATE_KEY_ERROR_CODE
     ) {
-      return res
-        .status(409)
-        .json({ error: 'User with this email already exists' });
+      const pgError = error as any;
+      if (pgError.constraint === 'users_email_key') {
+        return res
+          .status(409)
+          .json({ error: 'User with this email already exists' });
+      }
     }
 
     return res.status(500).json({ error: 'Internal server error' });
