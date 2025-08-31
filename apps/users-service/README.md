@@ -155,7 +155,7 @@ apps/users-service/
 ├── src/
 │   ├── main.ts                 # Express app setup
 │   ├── routes/
-│   │   └── authRoutes.ts       # Authentication endpoints
+│   │   └── auth.ts       # Authentication endpoints
 │   └── database/
 │       ├── connection.ts       # PostgreSQL connection
 │       └── migrations/

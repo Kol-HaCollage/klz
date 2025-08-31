@@ -1,7 +1,3 @@
-/**
- * Users Service API
- * This is the main entry point for the users service
- */
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -29,7 +25,6 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-// Basic health check route
 app.get('/health', (req, res) => {
   res.json({
     status: 'OK',
@@ -39,7 +34,7 @@ app.get('/health', (req, res) => {
 });
 
 // Routes
-const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
 const port = process.env.PORT || 3333;

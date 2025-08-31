@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
+const { testConnection, query } = require('./database/connection');
 
 // Load environment variables
 dotenv.config();
@@ -8,7 +9,6 @@ dotenv.config();
 const runMigration = async () => {
   try {
     // Import the database functions
-    const { testConnection, query } = require('./database/connection');
 
     console.log('Testing database connection...');
     await testConnection();
