@@ -1,13 +1,13 @@
 {
-  "extends": "./tsconfig.base.json",
-  "compileOnSave": false,
-  "files": [],
-  "references": [
-    {
-      "path": "./apps/KLZ-e2e"
-    },
-    {
-      "path": "./apps/KLZ"
-    }
-  ]
+	"extends": "./tsconfig.base.json",
+	"compileOnSave": false,
+	"references": [
+		{
+			"path": "./apps/KLZ-e2e"
+		},
+		{
+			"path": "./apps/KLZ"
+		}
+	],
+	"files": []
 }

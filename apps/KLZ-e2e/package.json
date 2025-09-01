@@ -1,10 +1,10 @@
 {
-  "name": "@klz/KLZ-e2e",
-  "version": "0.0.1",
-  "private": true,
-  "nx": {
-    "implicitDependencies": [
-      "@klz/KLZ"
-    ]
-  }
+	"name": "@klz/KLZ-e2e",
+	"version": "0.0.1",
+	"private": true,
+	"nx": {
+		"implicitDependencies": [
+			"@klz/KLZ"
+		]
+	}
 }
