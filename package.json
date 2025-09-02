@@ -8,10 +8,10 @@
 		"lint:fix": "npx oxlint --fix && npx eslint --fix"
 	},
 	"dependencies": {
+		"@tanstack/react-router": "^1.131.32",
 		"react": "19.0.0",
 		"react-dom": "19.0.0",
 		"react-is": "19.0.0",
-		"react-router-dom": "6.29.0",
 		"styled-components": "5.3.6"
 	},
 	"devDependencies": {
@@ -30,6 +30,7 @@
 		"@swc/cli": "~0.6.0",
 		"@swc/core": "^1.5.7",
 		"@swc/helpers": "~0.5.11",
+		"@tanstack/router-plugin": "^1.131.32",
 		"@testing-library/dom": "10.4.0",
 		"@testing-library/react": "16.1.0",
 		"@types/node": "20.19.9",
